@@ -81,13 +81,27 @@ def leetcode_in_use(site_name):
             return True
     return False
 
+def is_arduino_running():
+    for proc in psutil.process_iter(['name']):
+        name = proc.info['name']
+        if name and 'arduino' in name.lower():
+            print("Arduino is seen", name)
+            return True
+    return False
+
+
 if __name__ == '__main__':
     service = get_calendar_service()  # Get Google Calendar service object
 
     is_vs_running = False
     vs_start_time = None
+
     is_lc_running = False
     lc_start_time = None
+
+    is_arduino_IDE_running = False
+    arduino_start_time = None
+
 
     while True:
         if is_vscode_running():
@@ -117,6 +131,20 @@ if __name__ == '__main__':
                 if lc_start_time:
                     create_calendar_event(service, lc_start_time, lc_end_time, 'LeetCode Practice')
                     lc_start_time = None
+        
+        if is_arduino_running():
+            if not is_arduino_IDE_running:
+                is_arduino_IDE_running = True
+                arduino_start_time = dt.datetime.now()
+                print("Arduino has been opened")
+            else:
+                if is_arduino_IDE_running:
+                    is_arduino_IDE_running = False
+                    arduino_end_time = dt.datetime.now()
+                    print("Arduino has been closed")
+                    if arduino_start_time:
+                        create_calendar_event(service, arduino_start_time, arduino_end_time, 'Electronics Session')
+                        arduino_start_time = None
 
                 
 
