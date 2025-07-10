@@ -137,14 +137,14 @@ if __name__ == '__main__':
                 is_arduino_IDE_running = True
                 arduino_start_time = dt.datetime.now()
                 print("Arduino has been opened")
-            else:
-                if is_arduino_IDE_running:
-                    is_arduino_IDE_running = False
-                    arduino_end_time = dt.datetime.now()
-                    print("Arduino has been closed")
-                    if arduino_start_time:
-                        create_calendar_event(service, arduino_start_time, arduino_end_time, 'Electronics Session')
-                        arduino_start_time = None
+        else:
+            if is_arduino_IDE_running:
+                is_arduino_IDE_running = False
+                arduino_end_time = dt.datetime.now()
+                print("Arduino has been closed")
+                if arduino_start_time:
+                    create_calendar_event(service, arduino_start_time, arduino_end_time, 'Electronics Session')
+                    arduino_start_time = None
 
                 
 
